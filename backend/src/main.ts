@@ -19,6 +19,9 @@ export const createServer = async (expressInstance: any) => {
   
   app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
+
+  // Add a simple health check that doesn't use the DB
+  expressInstance.get('/api/health', (req, res) => res.json({ status: 'ok', timestamp: new Date().toISOString() }));
   
   app.enableCors({
     origin: (origin, callback) => {
