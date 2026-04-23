@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 console.log('🚀 API main.ts is loading...');
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-import * as express from 'express';
+import express from 'express';
 import { ExpressAdapter } from '@nestjs/platform-express';
 
 const server = express();
