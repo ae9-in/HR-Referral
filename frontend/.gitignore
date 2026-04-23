@@ -1,0 +1,20 @@
+# Dependencies
+node_modules
+
+# Next.js build output
+.next
+out
+
+# Environment
+.env.local
+.env.production
+
+# Build artifacts
+*.tsbuildinfo
+
+# Turbo
+.turbo
+
+# OS
+.DS_Store
+Thumbs.db

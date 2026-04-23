@@ -1,0 +1,84 @@
+generator client {
+  provider      = "prisma-client-js"
+  output        = "../client"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id           String     @id @default(cuid())
+  email        String     @unique
+  phone        String     @unique
+  employeeId   String     @unique
+  name         String
+  department   String?
+  role         String     @default("EMPLOYEE")
+  passwordHash String?
+  isVerified   Boolean    @default(false)
+  otp          String?
+  otpExpiry    DateTime?
+  createdAt    DateTime   @default(now())
+  referrals    Referral[]
+}
+
+model OtpVerification {
+  id        String   @id @default(cuid())
+  email     String
+  otpHash   String
+  expiresAt DateTime
+  attempts  Int      @default(0)
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model EmailLog {
+  id      String   @id @default(cuid())
+  to      String
+  subject String
+  body    String
+  otp     String?
+  sentAt  DateTime @default(now())
+  status  String   @default("SENT")
+}
+
+model Referral {
+  id             String      @id @default(cuid())
+  refCode        String      @unique @default(cuid())
+  candidateName  String
+  candidateEmail String
+  candidatePhone String
+  resumeUrl      String?
+  notes          String?
+  status         String      @default("NEW")
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  referredById   String
+  positionId     String
+  position       Position    @relation(fields: [positionId], references: [id])
+  referredBy     User        @relation(fields: [referredById], references: [id])
+  statusHistory  StatusLog[]
+}
+
+model StatusLog {
+  id         String   @id @default(cuid())
+  fromStatus String
+  toStatus   String
+  note       String?
+  createdAt  DateTime @default(now())
+  referralId String
+  changedBy  String
+  referral   Referral @relation(fields: [referralId], references: [id])
+}
+
+model Position {
+  id         String     @id @default(cuid())
+  title      String
+  department String?
+  location   String?
+  isActive   Boolean    @default(true)
+  referrals  Referral[]
+}

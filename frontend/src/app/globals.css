@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Base Reset ─── */
+@layer base {
+  html { @apply h-full scroll-smooth; overflow-anchor: none; }
+  body {
+    @apply h-full antialiased;
+    overflow-anchor: none;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    background-color: #F7F8F3;
+    color: #012C3D;
+  }
+  ::selection {
+    background-color: #78BDC4;
+    color: #012C3D;
+  }
+  input, select, textarea {
+    @apply outline-none;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  }
+}
+
+/* ─── Component Classes ─── */
+@layer components {
+  .btn-primary {
+    @apply px-6 py-3 bg-ember text-slate-dark font-semibold rounded-xl
+           hover:bg-ember-dark transition-all duration-300 
+           shadow-lg shadow-ember/20 hover:shadow-xl hover:shadow-ember/30
+           active:scale-[0.98];
+  }
+  .btn-secondary {
+    @apply px-6 py-3 bg-white text-slate-dark font-semibold rounded-xl
+           border border-silver/50 hover:border-ember/40 
+           transition-all duration-300 hover:shadow-md
+           active:scale-[0.98];
+  }
+  .btn-ghost {
+    @apply px-4 py-2 text-slate-dark/70 font-medium rounded-lg
+           hover:bg-white/60 hover:text-slate-dark transition-all duration-200;
+  }
+  .card {
+    @apply bg-white rounded-2xl border border-silver/30 
+           shadow-sm hover:shadow-md transition-all duration-300;
+  }
+  .card-hover {
+    @apply card hover:border-ember/30 hover:-translate-y-1;
+  }
+  .input-field {
+    @apply w-full px-4 py-3.5 bg-cloud/50 border border-silver/40 rounded-xl
+           text-slate-dark placeholder:text-silver 
+           focus:border-ember/50 focus:ring-2 focus:ring-ember/10
+           transition-all duration-200;
+  }
+  .label {
+    @apply text-xs font-bold text-slate-dark/50 uppercase tracking-[0.15em] mb-2 block;
+  }
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider;
+  }
+  .badge-new {
+    @apply badge bg-blue-50 text-blue-600 border border-blue-100;
+  }
+  .badge-contacted {
+    @apply badge bg-amber-50 text-amber-600 border border-amber-100;
+  }
+  .badge-selected {
+    @apply badge bg-emerald-50 text-emerald-600 border border-emerald-100;
+  }
+  .badge-rejected {
+    @apply badge bg-red-50 text-red-500 border border-red-100;
+  }
+  .glass {
+    @apply bg-white/70 backdrop-blur-xl border border-white/40;
+  }
+  .glass-dark {
+    @apply bg-brand-navy/60 backdrop-blur-2xl border-r border-white/5;
+  }
+  .glass-light {
+    @apply bg-white/60 backdrop-blur-2xl border-b border-brand-navy/5;
+  }
+}
+
+/* ─── Utility Animations ─── */
+@layer utilities {
+  .stagger-1 { animation-delay: 0.1s; }
+  .stagger-2 { animation-delay: 0.2s; }
+  .stagger-3 { animation-delay: 0.3s; }
+  .stagger-4 { animation-delay: 0.4s; }
+  .stagger-5 { animation-delay: 0.5s; }
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  .animate-float-slow {
+    animation: float 8s ease-in-out infinite;
+  }
+}
+
+/* ─── Custom Scrollbar ─── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #F7F8F3; }
+::-webkit-scrollbar-thumb { background: #78BDC4; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #012C3D; }

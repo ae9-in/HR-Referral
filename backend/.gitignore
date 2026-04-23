@@ -1,0 +1,25 @@
+# Dependencies
+node_modules
+dist
+
+# Environment
+.env
+
+# Prisma
+prisma/prisma/migrations
+
+# Build artifacts
+*.tsbuildinfo
+
+# Logs
+*.log
+api_errors.txt
+errors.txt
+out.log
+
+# Turbo
+.turbo
+
+# OS
+.DS_Store
+Thumbs.db
