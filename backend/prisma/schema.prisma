@@ -4,12 +4,12 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id           String     @id @default(cuid())
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
   email        String     @unique
   phone        String     @unique
   employeeId   String     @unique
@@ -25,7 +25,7 @@ model User {
 }
 
 model OtpVerification {
-  id        String   @id @default(cuid())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   email     String
   otpHash   String
   expiresAt DateTime
@@ -35,7 +35,7 @@ model OtpVerification {
 }
 
 model EmailLog {
-  id      String   @id @default(cuid())
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
   to      String
   subject String
   body    String
@@ -45,8 +45,8 @@ model EmailLog {
 }
 
 model Referral {
-  id             String      @id @default(cuid())
-  refCode        String      @unique @default(cuid())
+  id             String      @id @default(auto()) @map("_id") @db.ObjectId
+  refCode        String      @unique
   candidateName  String
   candidateEmail String
   candidatePhone String
@@ -55,31 +55,29 @@ model Referral {
   status         String      @default("NEW")
   createdAt      DateTime    @default(now())
   updatedAt      DateTime    @updatedAt
-  referredById   String
-  positionId     String
+  referredById   String      @db.ObjectId
+  positionId     String      @db.ObjectId
   position       Position    @relation(fields: [positionId], references: [id])
   referredBy     User        @relation(fields: [referredById], references: [id])
   statusHistory  StatusLog[]
 }
 
 model StatusLog {
-  id         String   @id @default(cuid())
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
   fromStatus String
   toStatus   String
   note       String?
   createdAt  DateTime @default(now())
-  referralId String
+  referralId String   @db.ObjectId
   changedBy  String
   referral   Referral @relation(fields: [referralId], references: [id])
 }
 
 model Position {
-  id         String     @id @default(cuid())
+  id         String     @id @default(auto()) @map("_id") @db.ObjectId
   title      String
   department String?
   location   String?
   isActive   Boolean    @default(true)
   referrals  Referral[]
 }
-
-

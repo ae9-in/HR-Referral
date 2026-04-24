@@ -8,15 +8,19 @@ export class ReferralsService {
   constructor(private readonly prisma: PrismaClient) {}
 
   async create(createReferralDto: CreateReferralDto, userId: string) {
+    const { positionId, ...rest } = createReferralDto;
+    
     const position = await this.prisma.position.findUnique({
-      where: { id: createReferralDto.positionId },
+      where: { id: positionId },
     });
     if (!position) throw new NotFoundException('Position not found');
 
     return this.prisma.referral.create({
       data: {
-        ...createReferralDto,
-        referredById: userId,
+        ...rest,
+        refCode: `REF-${Math.random().toString(36).substring(2, 8).toUpperCase()}`, // Ensure a code is generated
+        referredBy: { connect: { id: userId } },
+        position: { connect: { id: positionId } },
       },
       include: {
         position: true,
@@ -31,9 +35,9 @@ export class ReferralsService {
           status ? { status } : {},
           query ? {
             OR: [
-              { candidateName: { contains: query } },
-              { candidateEmail: { contains: query } },
-              { position: { title: { contains: query } } },
+              { candidateName: { contains: query, mode: 'insensitive' } },
+              { candidateEmail: { contains: query, mode: 'insensitive' } },
+              { position: { title: { contains: query, mode: 'insensitive' } } },
             ],
           } : {},
         ],
@@ -66,11 +70,11 @@ export class ReferralsService {
       // Create status log
       await tx.statusLog.create({
         data: {
-          referralId: id,
           fromStatus: referral.status,
           toStatus: updateDto.status,
           note: updateDto.note,
           changedBy: userId,
+          referral: { connect: { id } },
         },
       });
 
