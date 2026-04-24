@@ -55,10 +55,12 @@ async function bootstrap() {
   console.log(`🚀 API is running on: http://localhost:${port}/api`);
 }
 
-// Always run bootstrap locally
-bootstrap().catch(err => {
-  console.error('❌ Failed to start API:', err);
-});
+// Only run bootstrap locally, not on Vercel
+if (!process.env.VERCEL) {
+  bootstrap().catch(err => {
+    console.error('❌ Failed to start API:', err);
+  });
+}
 
 export default async (req: any, res: any) => {
   await createServer(server);
